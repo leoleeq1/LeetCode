@@ -8,7 +8,7 @@ public:
         int val;
         while (start < end)
         {
-            mid = mid = (start + end) / 2;
+            mid = (start + end) / 2;
             val = nums[mid];
             if (val < target)
             {
