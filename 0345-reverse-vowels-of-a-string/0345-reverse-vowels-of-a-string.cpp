@@ -1,23 +1,14 @@
 class Solution {
 public:
-    char vowels[10] = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
-    bool isVowel(const string& s, int index)
-    {
-        for (int i=0;i<10;++i)
-        {
-            if (s[index] == vowels[i])
-                return true;
-        }
-        return false;
-    }
     string reverseVowels(string s) {
+        unordered_set<char> set = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
         int l = 0;
         int r = s.length() - 1;
         
         while (l < r)
         {
-            bool lb = isVowel(s, l);
-            bool rb = isVowel(s, r);
+            bool lb = set.find(s[l]) != set.end();
+            bool rb = set.find(s[r]) != set.end();
             
             if (lb && rb)
             {
