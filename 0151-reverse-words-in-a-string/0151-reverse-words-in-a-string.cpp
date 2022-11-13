@@ -1,7 +1,6 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        string t;
         string result;
         for (int i=0;i<s.length();)
         {
