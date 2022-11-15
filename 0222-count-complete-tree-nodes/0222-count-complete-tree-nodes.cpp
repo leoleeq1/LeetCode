@@ -36,18 +36,9 @@ public:
         int lh = getLHeight(root);
         int rh = getRHeight(root);
         
-        int result = 0;
         if (lh == rh)
-        {
-            result = 1;
-            for (int i=0;i<rh;++i)
-            {
-                result = result * 2 + 1; 
-            }
-        }
+            return pow(2, rh + 1) - 1;
         else
-            result = dfs(root);
-        
-        return result;
+            return dfs(root);        
     }
 };
