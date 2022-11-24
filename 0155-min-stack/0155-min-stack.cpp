@@ -4,37 +4,25 @@ struct ms {
 
 class MinStack {
 public:
-    ms *s;
-    int capacity = 4;
-    int size = 0;
-    int mnm = INT_MAX;
-    MinStack() {s = (ms*)malloc(sizeof(ms) * capacity);}
+    stack<ms> s;
+    MinStack() {}
     
     void push(int val) {
-        mnm = min(val, mnm);
+        int mnm = min(val, s.size() > 0 ? getMin() : INT_MAX);
         ms t = {val, mnm};
-        if (size >= capacity)
-        {
-            capacity *= 2;
-            s = (ms*)realloc(s, sizeof(ms) * capacity);
-        }
-        s[size++] = t;
+        s.push(t);
     }
     
     void pop() {
-        --size;
-        if (size > 0)
-            mnm = s[size - 1].mnm;
-        else
-            mnm = INT_MAX;
+        s.pop();
     }
     
     int top() {
-        return s[size-1].val;
+        return s.top().val;
     }
     
     int getMin() {
-        return s[size-1].mnm;
+        return s.top().mnm;
     }
 };
 /**
