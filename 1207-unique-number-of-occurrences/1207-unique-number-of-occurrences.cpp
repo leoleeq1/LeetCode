@@ -8,11 +8,8 @@ public:
             ++occ[i];
         
         for (auto o : occ)
-            if (unique.count(o.second))
-                return false;
-            else
-                unique.insert(o.second);
+            unique.insert(o.second);
         
-        return true;
+        return occ.size() == unique.size();
     }
 };
