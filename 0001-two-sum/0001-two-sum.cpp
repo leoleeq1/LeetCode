@@ -1,22 +1,22 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        vector<int> result(2);
-        int sum;
+        auto idx = vector<int>(nums.size());
+        std::iota(idx.begin(), idx.end(), 0);
+        std::sort(idx.begin(), idx.end(), [&nums](int l, int r) { return nums[l] < nums[r]; });
+        int s = 0;
+        int e = nums.size() - 1;
         
-        for (int i=0;i<nums.size();++i)
+        while (s < e)
         {
-            for (int j=i+1;j<nums.size();++j)
-            {
-                sum = nums[i] + nums[j];
-                if (sum == target)
-                {
-                    result[0] = i;
-                    result[1] = j;
-                    return result;
-                }
-            }
+            auto sum = nums[idx[s]] + nums[idx[e]];
+            if (sum == target)
+                break;
+            if (sum > target)
+                --e;
+            else if (sum < target)
+                ++s;
         }
-        return result;
+        return vector<int>{idx[s], idx[e]};
     }
 };
