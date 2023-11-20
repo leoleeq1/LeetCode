@@ -1,19 +1,19 @@
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int, int> m;
-        for (auto i : nums)
+        if (nums.size() == k)
+            return nums;
+
+        unordered_map<int, int> freq;
+        for (auto n : nums)
         {
-            ++m[i];
+            ++freq[n];
         }
-        vector<int> v(m.size());
-        int i=0;
-        for (auto& p : m)
-        {
-            v[i++] = p.first;
-        }
-        sort(v.begin(), v.end(), [&](int l, int r) -> bool {return m[l] > m[r];});
-        v.erase(v.begin() + k, v.end());
-        return v;
+
+        vector<int> top(freq.size());
+        transform(freq.begin(), freq.end(), top.begin(), [](auto p) { return p.first; });
+        sort(top.begin(), top.end(), [&](int l, int r) { return freq[l] > freq[r]; });
+        top.erase(top.begin() + k, top.end());
+        return top;
     }
 };
