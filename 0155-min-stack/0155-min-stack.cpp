@@ -1,16 +1,13 @@
-struct ms {
-    int val, mnm;
-};
-
 class MinStack {
 public:
-    stack<ms> s;
-    MinStack() {}
+    MinStack() {
+    }
     
     void push(int val) {
-        int mnm = min(val, s.size() > 0 ? getMin() : INT_MAX);
-        ms t = {val, mnm};
-        s.push(t);
+        int m = val;
+        if (!s.empty())
+            m = min(m, get<1>(s.top()));
+        s.push({val, m});
     }
     
     void pop() {
@@ -18,13 +15,16 @@ public:
     }
     
     int top() {
-        return s.top().val;
+        return get<0>(s.top());
     }
     
     int getMin() {
-        return s.top().mnm;
+        return get<1>(s.top());
     }
+private:
+    stack<pair<int, int>> s;
 };
+
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack* obj = new MinStack();
