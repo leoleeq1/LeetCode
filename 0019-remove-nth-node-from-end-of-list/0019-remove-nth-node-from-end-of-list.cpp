@@ -10,31 +10,25 @@
  */
 class Solution {
 public:
-    ListNode* removeNthFromEnd(ListNode* head, int m) {
-        queue<ListNode*> q;
-        ListNode* n = head;
-        while (n != nullptr)
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        auto root = new ListNode(-1, head);
+        auto prev = root;
+        auto p = head;
+        auto pn = head;
+        
+        for (int i=0;i<n;++i)
         {
-            q.push(n);
-            if (q.size() > (m + 1))
-            {
-                q.pop();
-            }
-            n = n->next;
+            pn = pn->next;
         }
         
-        ListNode* front = q.front();
-        if (q.size() == m)
-            return front->next;
-        
-        q.pop();
-        if (q.empty())
-            front->next = nullptr;
-        else
+        while(pn)
         {
-            n = q.front();
-            front->next = n->next;
+            prev = prev->next;
+            p = p->next;
+            pn = pn->next;
         }
-        return head;
+        
+        prev->next = p->next;
+        return root->next;
     }
 };
