@@ -11,52 +11,25 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if (lists.size() == 0)
-            return nullptr;
-        if (lists.size() == 1)
-            return lists[0];
+        auto root = new ListNode(-1);
+        auto p = root;
+        priority_queue<ListNode*, vector<ListNode*>, function<bool(ListNode*, ListNode*)>> pq([](auto l, auto r) { return l->val > r->val; });
         
-        auto merged = merge2List(lists[0], lists[1]);
-        if (lists.size() == 2)
-            return merged;
-        
-        ListNode* root = new ListNode(-1, merged);
-        for (int i=2;i<lists.size();++i)
+        for (auto l : lists)
         {
-            merged = merge2List(root->next, lists[i]);
-            root->next = merged;
+            if (l)
+                pq.push(l);
         }
         
-        return root->next;
-    }
-    
-    ListNode* merge2List(ListNode* l1, ListNode* l2)
-    {
-        ListNode* root = new ListNode(-1);
-        ListNode* p = root;
-        auto p1 = l1;
-        auto p2 = l2;
-
-        while (p1 && p2)
+        while (!pq.empty())
         {
-            if (p1->val < p2->val)
-            {
-                p->next = p1;
-                p1 = p1->next;
-            }
-            else
-            {
-                p->next = p2;
-                p2 = p2->next;
-            }
-            
+            auto node = pq.top();
+            pq.pop();
+            p->next = node;
+            if (node->next)
+                pq.push(node->next);
             p = p->next;
         }
-
-        if (p1)
-            p->next = p1;
-        if (p2)
-            p->next = p2;
         
         return root->next;
     }
