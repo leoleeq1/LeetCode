@@ -1,28 +1,27 @@
 class Solution {
 public:
-    vector<vector<int>> result;
-    unordered_set<int> set;
-    vector<int> v;
-    int used = 0;
-    void f(vector<int>& nums)
-    {
-        for (int i=0;i<nums.size();++i)
-        {
-            if (set.count(i)) continue;
-            v.push_back(nums[i]);
-            set.insert(i);
-            used += 1;
-            if (used == nums.size())
-                result.push_back(v);
-            else
-                f(nums);
-            used -= 1;
-            set.erase(i);
-            v.pop_back();
-        }
-    }
     vector<vector<int>> permute(vector<int>& nums) {
-        f(nums);
+        vector<int> visit;
+        backtrack(nums, visit);
         return result;
     }
+    
+    void backtrack(vector<int>& nums, vector<int>& visit)
+    {
+        if (visit.size() == nums.size())
+        {
+            result.push_back(visit);
+            return;
+        }
+        
+        for (auto n : nums)
+        {
+            if (find(visit.begin(), visit.end(), n) != visit.end()) continue;
+            visit.push_back(n);
+            backtrack(nums, visit);
+            visit.pop_back();
+        }
+    }
+private:
+    vector<vector<int>> result;
 };
