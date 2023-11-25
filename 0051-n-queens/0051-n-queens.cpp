@@ -1,47 +1,45 @@
 class Solution {
 public:
     vector<vector<string>> result;
-    vector<pair<int, int>> placed;
+    vector<string> board;
     vector<vector<string>> solveNQueens(int n) {
-        backtrack(n, {-1, -1});
+        board = vector<string>(n, string(n, '.'));
+        backtrack(board, 0);
         return result;
     }
     
-    void backtrack(int n, pair<int, int> pos)
+    void backtrack(vector<string>& board, int y)
     {
-        if (placed.size() == n)
+        if (y == board.size())
         {
-            vector<string> sub;
-            for (int i=0;i<n;++i)
-            {
-                auto [x, y] = placed[i];
-                string s(n, '.');
-                s[x] = 'Q';
-                sub.push_back(s);
-            }
-            result.push_back(sub);
+            result.push_back(board);
             return;
         }
         
-        auto [cx, cy] = pos;
-        for (int y=cy+1;y<n;++y)
+        for (int x=0;x<board.size();++x)
         {
-            for (int x=0;x<n;++x)
-            {
-                if (!canPlace({x, y})) continue;
-                placed.push_back({x, y});
-                backtrack(n, {x ,y});
-                placed.pop_back();
-            }
+            if (!canPlace({x, y})) continue;
+            board[y][x] = 'Q';
+            backtrack(board, y + 1);
+            board[y][x] = '.';
         }
     }
     
     bool canPlace(pair<int, int> pos)
     {
-        return placed.size() == 0 || !any_of(placed.begin(), placed.end(), [&](auto p) {
-            auto [x, y] = pos;
-            auto [px, py] = p;
-            return x == px || y == py || (abs(x - px) == abs(y - py));
-        });
+        auto [cx, cy] = pos;
+        for (int y=0;y<cy;++y)
+        {
+            if (board[y][cx] == 'Q')
+                return false;
+            auto d = cy - y;
+            auto x = cx + d;
+            if (x >= 0 && x < board.size() && board[y][x] == 'Q')
+                return false;
+            x = cx - d;
+            if (x >= 0 && x < board.size() && board[y][x] == 'Q')
+                return false;
+        }
+        return true;
     }
 };
