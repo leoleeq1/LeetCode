@@ -1,16 +1,23 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if (s.length() != t.length())
-            return false;
-
-        std::sort(s.begin(), s.end());
-        std::sort(t.begin(), t.end());
-        for (int i=0;i<s.length();++i)
+        int slen = s.length();
+        int tlen = t.length();
+        if (slen != tlen) return false;
+        
+        int cnt[26] = {0,};
+        
+        for (int i=0;i<slen;++i)
         {
-            if (s[i] != t[i])
+            ++cnt[s[i] - 'a'];
+        }
+        
+        for (int i=0;i<slen;++i)
+        {
+            if (--cnt[t[i] - 'a'] < 0)
                 return false;
         }
+        
         return true;
     }
 };
