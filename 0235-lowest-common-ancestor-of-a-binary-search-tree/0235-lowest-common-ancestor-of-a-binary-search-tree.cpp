@@ -11,42 +11,9 @@
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        stack<TreeNode*> s;
-        s.push(root);
-        
-        if (p->val > q->val)
-        {
-            TreeNode* tmp = p;
-            p = q;
-            q = tmp;
-        }
-        
-        while (!s.empty())
-        {
-            TreeNode* n = s.top();
-            s.pop();
-            
-            if (n == nullptr)
-                continue;
-            
-            if (q->val == n->val)
-            {
-                return n;
-            }
-            else if (p->val < n->val && q->val < n->val)
-            {
-                s.push(n->left);
-            }
-            else if (p->val > n->val && q->val > n->val)
-            {
-                s.push(n->right);
-            }
-            else
-            {
-                return n;
-            }
-        }
-        
-        return nullptr;
+        // if (root->val == p->val || root->val == q->val) return root;
+        if (root->val > p->val && root->val > q->val) return lowestCommonAncestor(root->left, p, q);
+        if (root->val < p->val && root->val < q->val) return lowestCommonAncestor(root->right, p, q);
+        return root;
     }
 };
