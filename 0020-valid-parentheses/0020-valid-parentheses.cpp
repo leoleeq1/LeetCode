@@ -2,24 +2,23 @@ class Solution {
 public:
     bool isValid(string s) {
         stack<char> stk;
-        vector<vector<char>> pairs{{'(', ')'}, {'{', '}'}, {'[', ']'}};
+        unordered_map<char, char> map;
+        map[')'] = '(';
+        map['}'] = '{';
+        map[']'] = '[';
         for (auto c : s)
         {
-            for (auto& p : pairs)
+            if (map.find(c) != map.end())
             {
-                if (c == p[0])
-                {
-                    stk.push(c);
-                    break;
-                }
-                else if (c == p[1])
-                {
-                    if (stk.size() == 0 || stk.top() != p[0])
-                        return false;
-                    stk.pop();
-                }
+                if (stk.empty() || stk.top() != map[c])
+                    return false;
+                stk.pop();
+                continue;
             }
+            
+            stk.push(c);
         }
-        return stk.size() == 0;
+        
+        return stk.empty();
     }
 };
