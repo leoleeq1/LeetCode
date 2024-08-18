@@ -1,24 +1,26 @@
 class Solution {
 public:
     int longestPalindrome(string s) {
-        short letters[256];
-        memset(letters, 0, sizeof(letters));
-        int len = s.length();
-        for (int i=0;i<len;++i)
-            ++letters[s[i]];
-        
-        bool usedSingleLetter = false;
-        int pal = 0;
-        for (int i=65;i<123;++i)
+        unordered_map<char, int> map;
+        for (auto c : s)
         {
-            if ((letters[i] & 1) == 1 && !usedSingleLetter)
-            {
-                ++pal;
-                usedSingleLetter = true;
-            }
-            pal += letters[i] / 2 * 2;
+            if (map.find(c) == map.end())
+                map[c] = 0;
+            ++map[c];
         }
-        return pal;
         
+        int ans = 0;
+        bool odd = false;
+        for (auto p : map)
+        {
+            bool curOdd = p.second % 2 == 1;
+            ans += p.second;
+            if (curOdd)
+            {
+                if (!odd) odd = true;
+                else --ans;
+            }
+        }
+        return ans;
     }
 };
