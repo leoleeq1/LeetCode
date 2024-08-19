@@ -1,22 +1,20 @@
 public class Solution {
-    public int[] TwoSum(int[] nums, int target) {
-        var numWithIndex = nums.Select((n, i) => (n, i)).OrderBy(p => p.n).ToArray();
-        var i = 0;
-        var j = nums.Length - 1;
-        while (i < j)
+    public int[] TwoSum(int[] nums, int target)
+    {
+        int[] indices = Enumerable.Range(0, nums.Length).ToArray();
+        Array.Sort(indices, (l, r) => { return nums[l].CompareTo(nums[r]); });
+
+        var l = 0;
+        var r = nums.Length - 1;
+
+        while (l < r)
         {
-            var p1 = numWithIndex[i];
-            var p2 = numWithIndex[j];
-            if (p1.n + p2.n == target)
-            {
-                return new[] {p1.i, p2.i};
-            }
-            
-            if (p1.n + p2.n > target)
-                --j;
-            if (p1.n + p2.n < target)
-                ++i;
+            var sum = nums[indices[l]] + nums[indices[r]];
+            if (sum == target) return new[] { indices[l], indices[r] };
+            if (sum > target) --r;
+            else ++l;
         }
-        return new[] {-1, -1};
+
+        return new[] { -1, -1 };
     }
 }
